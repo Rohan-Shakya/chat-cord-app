@@ -15,6 +15,10 @@ connectDB();
 app.use(cors());
 app.use(express.json());
 
+app.use('/api/auth', require('./router/auth'));
+app.use('/api/users', require('./router/users'));
+app.use('/api/chats', require('./router/chat'));
+
 server.listen(process.env.PORT, () =>
   console.log(`Server listening to port ${process.env.PORT}`)
 );
