@@ -5,10 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "server": "nodemon server.js",
-    "client": "npm start --prefix client",
-    "clientInstall": "npm install --prefix client",
-    "dev": "env-cmd -f ./config/dev.env concurrently \"npm run server\" \"npm run client\""
+    "dev": "env-cmd -f ./config/dev.env nodemon server.js"
   },
   "repository": {
     "type": "git",
@@ -33,7 +30,6 @@
     "socket.io": "^3.1.2"
   },
   "devDependencies": {
-    "concurrently": "^6.0.0",
     "env-cmd": "^10.1.0",
     "nodemon": "^2.0.7"
   }
