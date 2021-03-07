@@ -53,12 +53,12 @@ export const Home = () => {
             {user && (
               <>
                 <a
-                  href={`/api/users/${user._id}/avatar`}
+                  href={`https://chat-cord-101.herokuapp.com/api/users/${user._id}/avatar`}
                   target='_blank'
                   rel='noreferrer'
                 >
                   <img
-                    src={`/api/users/${user._id}/avatar`}
+                    src={`https://chat-cord-101.herokuapp.com/api/users/${user._id}/avatar`}
                     title={user.name}
                     alt={user.name}
                     style={{

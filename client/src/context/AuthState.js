@@ -34,7 +34,9 @@ const AuthState = (props) => {
     }
 
     try {
-      const res = await axios.get('/api/users/me');
+      const res = await axios.get(
+        'https://chat-cord-101.herokuapp.com/api/users/me'
+      );
       dispatch({ type: USER_LOADED, payload: res.data });
     } catch (err) {
       dispatch({ type: AUTH_ERROR });
@@ -50,7 +52,11 @@ const AuthState = (props) => {
     };
 
     try {
-      const res = await axios.post('/api/users', formData, config);
+      const res = await axios.post(
+        'https://chat-cord-101.herokuapp.com/api/users',
+        formData,
+        config
+      );
       dispatch({
         type: REGISTER_SUCCESS,
         payload: res.data,
@@ -74,7 +80,11 @@ const AuthState = (props) => {
     };
 
     try {
-      const res = await axios.post('/api/auth', formData, config);
+      const res = await axios.post(
+        'https://chat-cord-101.herokuapp.com/api/auth',
+        formData,
+        config
+      );
       dispatch({
         type: LOGIN_SUCCESS,
         payload: res.data,
@@ -96,7 +106,11 @@ const AuthState = (props) => {
       },
     };
     try {
-      const res = await axios.patch('/api/users/me', formData, config);
+      const res = await axios.patch(
+        'https://chat-cord-101.herokuapp.com/api/users/me',
+        formData,
+        config
+      );
 
       dispatch({
         type: UPDATE_SUCCESS,

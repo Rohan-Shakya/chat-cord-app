@@ -6,7 +6,7 @@ import queryString from 'query-string';
 import BOT from '../assets/bot.png';
 import { Button } from '../components/Button/Button.styles';
 
-const socket = io.connect('http://localhost:5000');
+const socket = io.connect('https://chat-cord-101.herokuapp.com');
 
 export const Chat = ({ location }) => {
   const authContext = useContext(AuthContext);
@@ -28,7 +28,9 @@ export const Chat = ({ location }) => {
       socket.emit('joinRoom', { id: user._id, name: username, room });
 
       const fetchData = async (room) => {
-        const res = await axios.get(`/api/chats/${room}`);
+        const res = await axios.get(
+          `https://chat-cord-101.herokuapp.com/api/chats/${room}`
+        );
         const data = res.data;
         setMessages(data);
       };
