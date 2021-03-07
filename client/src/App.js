@@ -8,6 +8,7 @@ import { PrivateRoute } from './routing/PrivateRoute';
 import { Login } from './pages/Login';
 import { Register } from './pages/Register';
 import { ProfileUpdate } from './components/ProfileUpdate/ProfileUpdate';
+import { Chat } from './pages/Chat';
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);
@@ -23,6 +24,7 @@ const App = () => {
           <Route path='/login' exact component={Login} />
           <Route path='/register' exact component={Register} />
           <Route path='/me/avatar' exact component={ProfileUpdate} />
+          <Route path='/chat' exact component={Chat} />
         </Switch>
       </Router>
     </AuthState>

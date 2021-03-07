@@ -3,6 +3,8 @@ const http = require('http');
 const socketIO = require('socket.io');
 const connectDB = require('./db/mongoose');
 const cors = require('cors');
+const { formatMessage, botMessage } = require('./utils/messages');
+const RoomUser = require('./models/roomUser');
 
 const app = express();
 const server = http.createServer(app);
@@ -37,12 +39,15 @@ io.on('connection', (socket) => {
     socket.join(room);
 
     // Welcome current user
-    socket.emit('message', botMessage(botName, 'Welcome to ChatCord!'));
+    socket.emit('message', botMessage(BOT_NAME, 'Welcome to ChatCord!'));
 
     // Broadcast when a user connects
     socket.broadcast
       .to(user.room)
-      .emit('message', botMessage(botName, `${user.name} has joined the chat`));
+      .emit(
+        'message',
+        botMessage(BOT_NAME, `${user.name} has joined the chat`)
+      );
 
     // Send users and room info
     io.to(user.room).emit('roomUsers', {
@@ -66,7 +71,7 @@ io.on('connection', (socket) => {
     if (user) {
       io.to(user.room).emit(
         'message',
-        botMessage(botName, `${user.name} has left the chat`)
+        botMessage(BOT_NAME, `${user.name} has left the chat`)
       );
 
       // Send users and room info

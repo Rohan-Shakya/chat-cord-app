@@ -11,8 +11,6 @@ const formatMessage = async (id, name, message, room) => {
     time: moment().format('h:mm a'),
   });
 
-  console.log(msg);
-
   await msg.save();
   return msg;
 };
