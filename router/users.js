@@ -181,7 +181,7 @@ router.get('/:id/avatar', async (req, res) => {
     res.set('Content-Type', 'image/png');
     res.send(user.avatar);
   } catch (err) {
-    res.send(404).send({ error: 'No Image. Sorry' });
+    res.status(404).send({ error: 'No Image. Sorry' });
   }
 });
 

@@ -31,7 +31,7 @@ export const Navbar = () => {
       {user && (
         <>
           <li>
-            <NavbarNavLink
+            <NavbarA
               href={`http://localhost:5000/api/users/${user._id}/avatar`}
               target='_blank'
               rel='noreferrer'
@@ -41,7 +41,7 @@ export const Navbar = () => {
                 title={user.name}
                 alt={user.name}
               />
-            </NavbarNavLink>
+            </NavbarA>
           </li>
           <li>{user.name.split(' ')[0]}</li>
         </>
