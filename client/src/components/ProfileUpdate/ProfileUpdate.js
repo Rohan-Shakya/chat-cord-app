@@ -91,7 +91,7 @@ const ProfileUpdate = ({
           dropOnPage
           server={{
             process: {
-              url: '/api/users/me/avatar',
+              url: 'https://chat-cord-101.herokuapp.com/api/users/me/avatar',
               headers: {
                 'x-auth-token': `${localStorage.token}`,
               },

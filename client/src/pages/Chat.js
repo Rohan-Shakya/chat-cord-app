@@ -28,7 +28,9 @@ const Chat = ({ location, user, loadUser }) => {
       socket.emit('joinRoom', { id: user._id, name: username, room });
 
       const fetchData = async (room) => {
-        const res = await axios.get(`/api/chats/${room}`);
+        const res = await axios.get(
+          `https://chat-cord-101.herokuapp.com/api/chats/${room}`
+        );
         const data = res.data;
         setMessages(data);
       };

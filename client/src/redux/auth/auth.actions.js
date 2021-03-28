@@ -9,7 +9,9 @@ export const loadUser = () => async (dispatch) => {
   }
 
   try {
-    const res = await axios.get('/api/users/me');
+    const res = await axios.get(
+      'https://chat-cord-101.herokuapp.com/api/users/me'
+    );
     dispatch({ type: AuthActionTypes.USER_LOADED, payload: res.data });
   } catch (err) {
     dispatch({ type: AuthActionTypes.AUTH_ERROR, payload: err.message });
@@ -25,7 +27,11 @@ export const register = (formData) => async (dispatch) => {
   };
 
   try {
-    const res = await axios.post('/api/users', formData, config);
+    const res = await axios.post(
+      'https://chat-cord-101.herokuapp.com/api/users',
+      formData,
+      config
+    );
     dispatch({
       type: AuthActionTypes.REGISTER_SUCCESS,
       payload: res.data,
@@ -49,7 +55,11 @@ export const login = (formData) => async (dispatch) => {
   };
 
   try {
-    const res = await axios.post('/api/auth', formData, config);
+    const res = await axios.post(
+      'https://chat-cord-101.herokuapp.com/api/auth',
+      formData,
+      config
+    );
     dispatch({
       type: AuthActionTypes.LOGIN_SUCCESS,
       payload: res.data,
@@ -71,7 +81,11 @@ export const update = (formData) => async (dispatch) => {
     },
   };
   try {
-    const res = await axios.patch('/api/users/me', formData, config);
+    const res = await axios.patch(
+      'https://chat-cord-101.herokuapp.com/api/users/me',
+      formData,
+      config
+    );
 
     dispatch({
       type: AuthActionTypes.UPDATE_SUCCESS,

@@ -35,7 +35,7 @@ const Navbar = ({ isAuthenticated, logout, user }) => {
         <>
           <li>
             <NavbarA
-              href={`/api/users/${user._id}/avatar`}
+              href={`https://chat-cord-101.herokuapp.com/api/users/${user._id}/avatar`}
               target='_blank'
               rel='noreferrer'
             >
