@@ -1,5 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
-import AuthContext from '../../context/AuthContext';
+import React, { useEffect, useState } from 'react';
 import { FilePond, registerPlugin } from 'react-filepond';
 import 'filepond/dist/filepond.min.css';
 
@@ -15,12 +14,24 @@ import { FormControl } from '../FormControl/FormControl';
 import { Spinner } from '../../layout/Spinner/Spinner';
 import { Button } from '../Button/Button.styles';
 import { ButtonsContainer, ToggleButton } from './ProfileUpdate.styles';
+import { update } from '../../redux/auth/auth.actions';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import {
+  selectIsAuthenticated,
+  selectUser,
+} from '../../redux/auth/auth.selectors';
 
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
 
-export const ProfileUpdate = (props) => {
-  const authContext = useContext(AuthContext);
-  const { isAuthenticated, user, update } = authContext;
+const ProfileUpdate = ({
+  isAuthenticated,
+  user,
+  update,
+  history,
+  ...props
+}) => {
+  console.log(user);
   const [files, setFiles] = useState([]);
   const [updateBtn, setUpdateBtn] = useState('Profile');
   const [userForm, setUserForm] = useState({
@@ -30,7 +41,7 @@ export const ProfileUpdate = (props) => {
 
   useEffect(() => {
     if (!isAuthenticated) {
-      props.history.push('/');
+      history.push('/');
     }
   });
 
@@ -80,7 +91,7 @@ export const ProfileUpdate = (props) => {
           dropOnPage
           server={{
             process: {
-              url: 'https://chat-cord-101.herokuapp.com/api/users/me/avatar',
+              url: '/api/users/me/avatar',
               headers: {
                 'x-auth-token': `${localStorage.token}`,
               },
@@ -151,3 +162,10 @@ export const ProfileUpdate = (props) => {
     </>
   );
 };
+
+const mapStateToProps = createStructuredSelector({
+  isAuthenticated: selectIsAuthenticated,
+  user: selectUser,
+});
+
+export default connect(mapStateToProps, { update })(ProfileUpdate);

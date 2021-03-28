@@ -1,6 +1,12 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import AuthContext from '../../context/AuthContext';
+import { createStructuredSelector } from 'reselect';
+import { logout } from '../../redux/auth/auth.actions';
+import {
+  selectIsAuthenticated,
+  selectUser,
+} from '../../redux/auth/auth.selectors';
 import {
   NavbarContainer,
   NavbarLink,
@@ -10,12 +16,9 @@ import {
   NavbarUserImage,
 } from './Navbar.styles';
 
-export const Navbar = () => {
+const Navbar = ({ isAuthenticated, logout, user }) => {
   const history = useHistory();
   const [path, setPath] = useState('/');
-  const authContext = useContext(AuthContext);
-
-  const { isAuthenticated, logout, user } = authContext;
 
   useEffect(() => {
     setPath(window.location.pathname);
@@ -32,12 +35,12 @@ export const Navbar = () => {
         <>
           <li>
             <NavbarA
-              href={`https://chat-cord-101.herokuapp.com/api/users/${user._id}/avatar`}
+              href={`/api/users/${user._id}/avatar`}
               target='_blank'
               rel='noreferrer'
             >
               <NavbarUserImage
-                src={`https://chat-cord-101.herokuapp.com/api/users/${user._id}/avatar`}
+                src={`/api/users/${user._id}/avatar`}
                 title={user.name}
                 alt={user.name}
               />
@@ -99,3 +102,10 @@ export const Navbar = () => {
     </NavbarContainer>
   );
 };
+
+const mapStateToProps = createStructuredSelector({
+  isAuthenticated: selectIsAuthenticated,
+  user: selectUser,
+});
+
+export default connect(mapStateToProps, { logout })(Navbar);

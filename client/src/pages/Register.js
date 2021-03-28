@@ -1,14 +1,27 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FormControl } from '../components/FormControl/FormControl';
 import {
   JoinContainerDiv,
   JoinMain,
 } from '../components/JoinContainer/JoinContainer.styles';
 import { Button } from '../components/Button/Button.styles';
-import AuthContext from '../context/AuthContext';
 import { Header } from '../components/Header/Header.styles';
+import { connect } from 'react-redux';
+import { register, clearErrors } from '../redux/auth/auth.actions';
+import { createStructuredSelector } from 'reselect';
+import {
+  selectError,
+  selectIsAuthenticated,
+} from '../redux/auth/auth.selectors';
 
-export const Register = (props) => {
+const Register = ({
+  register,
+  error,
+  avatar,
+  clearErrors,
+  isAuthenticated,
+  history,
+}) => {
   const [user, setUser] = useState({
     name: '',
     email: '',
@@ -16,15 +29,11 @@ export const Register = (props) => {
     password2: '',
   });
 
-  const authContext = useContext(AuthContext);
-
-  const { register, error, avatar, clearErrors, isAuthenticated } = authContext;
-
   useEffect(() => {
     if (isAuthenticated && !avatar) {
-      props.history.push('/me/avatar');
+      history.push('/me/avatar');
     } else if (isAuthenticated && avatar) {
-      props.history.push('/');
+      history.push('/');
     }
 
     if (
@@ -42,7 +51,7 @@ export const Register = (props) => {
     }
 
     // eslint-disable-next-line
-  }, [error, isAuthenticated, props.history]);
+  }, [error, isAuthenticated, history]);
 
   const { name, email, password, password2 } = user;
 
@@ -118,3 +127,13 @@ export const Register = (props) => {
     </JoinContainerDiv>
   );
 };
+
+const mapStateToProps = createStructuredSelector({
+  isAuthenticated: selectIsAuthenticated,
+  error: selectError,
+});
+
+export default connect(mapStateToProps, {
+  register,
+  clearErrors,
+})(Register);

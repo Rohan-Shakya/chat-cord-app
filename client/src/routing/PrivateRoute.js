@@ -1,10 +1,10 @@
-import React, { useContext } from 'react';
-import AuthContext from '../context/AuthContext';
+import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { selectIsAuthenticated } from '../redux/auth/auth.selectors';
 
-export const PrivateRoute = ({ component: Component, ...rest }) => {
-  const authContext = useContext(AuthContext);
-  const { isAuthenticated } = authContext;
+const PrivateRoute = ({ component: Component, isAuthenticated, ...rest }) => {
   return (
     <Route
       {...rest}
@@ -14,3 +14,9 @@ export const PrivateRoute = ({ component: Component, ...rest }) => {
     />
   );
 };
+
+const mapStateToProps = createStructuredSelector({
+  isAuthenticated: selectIsAuthenticated,
+});
+
+export default connect(mapStateToProps)(PrivateRoute);

@@ -1,26 +1,28 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FormControl } from '../components/FormControl/FormControl';
 import { Button } from '../components/Button/Button.styles';
 import { Header } from '../components/Header/Header.styles';
-import AuthContext from '../context/AuthContext';
 import {
   JoinContainerDiv,
   JoinMain,
 } from '../components/JoinContainer/JoinContainer.styles';
+import { connect } from 'react-redux';
+import { login, clearErrors } from '../redux/auth/auth.actions';
+import { createStructuredSelector } from 'reselect';
+import {
+  selectError,
+  selectIsAuthenticated,
+} from '../redux/auth/auth.selectors';
 
-export const Login = (props) => {
+const Login = ({ login, error, clearErrors, isAuthenticated, history }) => {
   const [user, setUser] = useState({
     email: '',
     password: '',
   });
 
-  const authContext = useContext(AuthContext);
-
-  const { login, error, clearErrors, isAuthenticated } = authContext;
-
   useEffect(() => {
     if (isAuthenticated) {
-      props.history.push('/');
+      history.push('/');
     }
 
     if (error === 'Invalid Credentials') {
@@ -29,10 +31,11 @@ export const Login = (props) => {
         ...user,
         password: '',
       });
+
       clearErrors();
     }
     // eslint-disable-next-line
-  }, [error, isAuthenticated, props.history]);
+  }, [error, isAuthenticated, history]);
 
   const { email, password } = user;
 
@@ -90,3 +93,10 @@ export const Login = (props) => {
     </JoinContainerDiv>
   );
 };
+
+const mapStateToProps = createStructuredSelector({
+  isAuthenticated: selectIsAuthenticated,
+  error: selectError,
+});
+
+export default connect(mapStateToProps, { login, clearErrors })(Login);

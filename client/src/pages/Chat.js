@@ -1,17 +1,17 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import AuthContext from '../context/AuthContext';
 import io from 'socket.io-client';
 import queryString from 'query-string';
 import BOT from '../assets/bot.png';
 import { Button } from '../components/Button/Button.styles';
+import { connect } from 'react-redux';
+import { loadUser } from '../redux/auth/auth.actions';
+import { createStructuredSelector } from 'reselect';
+import { selectUser } from '../redux/auth/auth.selectors';
 
-const socket = io.connect('https://chat-cord-101.herokuapp.com');
+const socket = io.connect('http://localhost:5000');
 
-export const Chat = ({ location }) => {
-  const authContext = useContext(AuthContext);
-
-  const { user, loadUser } = authContext;
+const Chat = ({ location, user, loadUser }) => {
   const [room, setRoom] = useState('');
   const [users, setUsers] = useState([]);
   const [message, setMessage] = useState('');
@@ -28,9 +28,7 @@ export const Chat = ({ location }) => {
       socket.emit('joinRoom', { id: user._id, name: username, room });
 
       const fetchData = async (room) => {
-        const res = await axios.get(
-          `https://chat-cord-101.herokuapp.com/api/chats/${room}`
-        );
+        const res = await axios.get(`/api/chats/${room}`);
         const data = res.data;
         setMessages(data);
       };
@@ -139,3 +137,9 @@ export const Chat = ({ location }) => {
     </div>
   );
 };
+
+const mapStateToProps = createStructuredSelector({
+  user: selectUser,
+});
+
+export default connect(mapStateToProps, { loadUser })(Chat);

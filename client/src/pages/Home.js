@@ -1,8 +1,7 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FormControl } from '../components/FormControl/FormControl';
 import { Button } from '../components/Button/Button.styles';
-import AuthContext from '../context/AuthContext';
 import { Header } from '../components/Header/Header.styles';
 import { Spinner } from '../layout/Spinner/Spinner';
 import {
@@ -10,10 +9,11 @@ import {
   JoinMain,
   JoinSelectOptions,
 } from '../components/JoinContainer/JoinContainer.styles';
-
-export const Home = () => {
-  const authContext = useContext(AuthContext);
-  const { user, loadUser, loading } = authContext;
+import { connect } from 'react-redux';
+import { loadUser } from '../redux/auth/auth.actions';
+import { selectLoading, selectUser } from '../redux/auth/auth.selectors';
+import { createStructuredSelector } from 'reselect';
+const Home = ({ user, loadUser, loading }) => {
   const [text, setText] = useState({
     username: '',
     room: 'Javascript',
@@ -112,3 +112,10 @@ export const Home = () => {
     </>
   );
 };
+
+const mapStateToProps = createStructuredSelector({
+  user: selectUser,
+  loading: selectLoading,
+});
+
+export default connect(mapStateToProps, { loadUser })(Home);
